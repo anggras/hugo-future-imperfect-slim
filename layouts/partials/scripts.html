@@ -14,7 +14,7 @@
         {{- $jsSlice = $jsSlice | append (resources.Get "js/staticman.js" | resources.ExecuteAsTemplate "js/staticman.js" $.Site.Params.staticman) -}}
       {{- end }}
       {{- $js := $jsSlice | resources.Concat "js/bundlecdn.js" | minify | fingerprint -}}
-    <script src="{{ $js.RelPermalink }}" integrity="{{ $js.Data.Integrity }}">
+    <script src="{{ $js.RelPermalink }}" integrity="{{ $js.Data.Integrity }}"></script>
     <script src="{{ "js/add-on.js" | relURL }}"></script>
     {{- else }}
       <script src="{{ . | relURL }}"></script>
