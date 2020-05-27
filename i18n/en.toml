@@ -5,6 +5,8 @@
   other = "{{ .Count }} minute read"
 [recent_posts]
   other = "Recent posts"
+[recent_articles]
+  other = "Recent articles"
 [see_more]
   other = "See more"
 [read_more]

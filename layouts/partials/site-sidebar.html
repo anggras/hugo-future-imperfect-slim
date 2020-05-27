@@ -1,10 +1,11 @@
 <section id="site-sidebar">
-  {{ if gt .Site.Params.sidebar.postAmount 0 }}
-    <section id="recent-posts">
+  {{ $articles := first (.Site.Params.sidebar.postAmount | default 5) (where site.RegularPages "Type" "=" "articles" ) }}
+  {{ if gt $articles 0 }}
+    <section id="recent-articles">
       <header>
-        <h1>{{ i18n "recent_posts" }}</h1>
+        <h1>{{ i18n "recent_articles" }}</h1>
       </header>
-      {{ range first (.Site.Params.sidebar.postAmount | default 5) (where site.RegularPages "Type" "in" site.Params.mainSections) }}
+      {{ range $articles }}
       <article class="mini-post">
         <section>
           {{ .Render "featured" }}
@@ -15,7 +16,30 @@
         </header>
       </article>
       {{ end }}
-      {{ if ge (len (where site.RegularPages "Type" "in" site.Params.mainSections)) (.Site.Params.sidebar.postAmount | default 5) }}
+      {{ if ge (len (where site.RegularPages "Type" "=" "articles")) (.Site.Params.sidebar.postAmount | default 5) }}
+        <footer>
+          <a href="{{ with .Site.Params.viewMorePostsLink }}{{ . | relLangURL }}{{ else }}{{ "post" | relLangURL }}{{ end }}" class="button">{{ i18n "see_more" }}</a>
+        </footer>
+      {{ end }}
+    </section>
+  {{ end }}
+  {{ if gt .Site.Params.sidebar.postAmount 0 }}
+    <section id="recent-posts">
+      <header>
+        <h1>{{ i18n "recent_posts" }}</h1>
+      </header>
+      {{ range first (.Site.Params.sidebar.postAmount | default 5) (where site.RegularPages "Type" "=" "blog") }}
+      <article class="mini-post">
+        <section>
+          {{ .Render "featured" }}
+        </section>
+        <header>
+          <h1><a href="{{ .RelPermalink }}">{{ .Title }}</a></h1>
+          <time class="published" datetime="">{{ default (i18n "date_format") | .Date.Format }}</time>
+        </header>
+      </article>
+      {{ end }}
+      {{ if ge (len (where site.RegularPages "Type" "=" "blog")) (.Site.Params.sidebar.postAmount | default 5) }}
         <footer>
           <a href="{{ with .Site.Params.viewMorePostsLink }}{{ . | relLangURL }}{{ else }}{{ "post" | relLangURL }}{{ end }}" class="button">{{ i18n "see_more" }}</a>
         </footer>
